@@ -1,6 +1,6 @@
 # POKEAPI
 
-[Link al proyecto](https://axelmullins.github.io/POKEAPI/)
+[Link al proyecto](https://pokeapi-opal.vercel.app/)
 
 - Se trata de un proyecto de práctica haciendo peticiones a la API [Pokeapi](https://pokeapi.co/).
 
