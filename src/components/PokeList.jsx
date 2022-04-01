@@ -1,83 +1,59 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col } from "react-bootstrap";
+import MyModal from "./MyModal";
 
-const PokeList = ({url, name}) => {
+const PokeList = ({ url, name}) => {
+  const urlList = url;
+  const [data, setData] = useState([]);
+  const [dataStats, setDataStats] = useState([]);
+  const [dataTypes, setDataTypes] = useState([]);
+//   const [list, setList] = useState([]);
+  const [listOthers, setListOthers] = useState([]);
 
-    const urlList = url;
-    const [data, setData] = useState([]);
-    const [dataStats, setDataStats] = useState([]);
-    const [list, setList] = useState([]);
-    const [listOthers, setListOthers] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
 
-    useEffect( () => {
-        axios.get(urlList)
-        .then( response => {
-            setData(response.data);
-            setDataStats(response.data.stats);
-            setList(response.data.sprites)
-            setListOthers(response.data.sprites.other.home)
-        } )
-        .catch( () => { alert("No se encontraron más pokemones") } )
-    }, [urlList])
+  useEffect(() => {
+    axios
+      .get(urlList)
+      .then((response) => {
+        setData(response.data);
+        setDataStats(response.data.stats);
+        setDataTypes(response.data.types);
+        // setList(response.data.sprites);
+        setListOthers(response.data.sprites.other.home);
+      })
+      .catch(() => {
+        alert("No se encontraron más pokemones");
+      });
+  }, [urlList]);
 
+  return (
+    <Col xs={3}>
+      <Button
+        variant="outline-light"
+        className="shadow border-0 cards"
+        onClick={() => setModalShow(true)}
+      >
+        <Card bg="transparent" className="border-0">
+            { !listOthers.front_default && <Card.Img variant="top" src="holder.js/100px180" />}
+            { listOthers.front_default && <Card.Img variant="top" src={listOthers.front_default} />}          
+          <Card.Body className="text-secondary">
+            <Card.Title className="text-capitalize"><h5>{name}</h5></Card.Title>
+            <span>ID: {data.id}</span>
+          </Card.Body>
+        </Card>
+      </Button>
+      <MyModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        dataStats={dataStats}
+        dataTypes={dataTypes}
+        img={listOthers.front_default}
+        name={name}
+      />
+    </Col>
+  );
+};
 
-    const styles = {        
-        article: {
-            backgroundColor: "white",
-            borderRadius: "20px 20px 0 0",
-            padding: "20px 0 0 0",
-            margin: "10px",
-            width: "90%",
-            textAlign: "center",
-            textTransform: "capitalize",
-            boxShadow: "4px 4px 20px 1px rgba(0,0,0,0.3)"
-        },
-        figure: {
-            backgroundColor: "white",
-            fontSize: "2rem"
-        },
-        figureImg: {
-            width: "100%",
-        },
-        figureSpan: {
-            float: "right",
-            fontSize: "14px",
-            padding: "4px",
-        },
-        listItem: {
-            listStyleImage: "linear-gradient(#e66465, #9198e5)",
-            textAlign: "start",
-            padding: "4px",
-            marginLeft: "20px"
-        },
-        footerCard: {
-            backgroundColor: "#e5e5f7",
-            with: "100%",
-            padding: "20px",
-        }
-    } 
-
-    return (
-        <article style={ styles.article }>
-            <figure style={ styles.figure }>
-                <figcaption>{name}</figcaption>
-                <img src={listOthers.front_default} alt={list.name} srcSet=""  style={ styles.figureImg }/>
-                <span style={ styles.figureSpan }>ID: {data.id}</span>
-            </figure>
-            <footer style={ styles.footerCard }>
-                <h3>Stats</h3>
-                <hr />
-                <ul>
-                    { dataStats.map( (el, key) => (
-                        <li key={key} style={ styles.listItem }> 
-                            <b>{el.stat.name}:</b> {el.base_stat}
-                        </li>
-                    ) ) }
-                </ul>  
-            </footer>
-        </article>
-    )
-}
-
-export default PokeList
-
+export default PokeList;

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Loader from './Loader';
 import PokeList from './PokeList';
+import { Button, Container, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 
 const PokemonCards = () => {
-    const [baseUrl, setBaseUrl] = useState("https://pokeapi.co/api/v2/pokemon?limit=5")
+    const [baseUrl, setBaseUrl] = useState("https://pokeapi.co/api/v2/pokemon?limit=4")
     const [post, setPost] = useState([]);
     const [data, setData] = useState([]);
     const [loader, setLoader] = useState(<Loader />);
@@ -22,42 +25,20 @@ const PokemonCards = () => {
     const btnNext = () => setBaseUrl(data.next);
     const btnPrev = () => setBaseUrl(data.previous);
 
-    const styles = {
-        container: {
-            display: "grid",
-            gridTemplateColumns: "20% 20% 20% 20% 20%",
-            gridTemplateAreas: "200px",
-            placeItems: "center",
-            padding: "10px"
-        },
-        buttonContainer: {
-            display: "flex",
-            justifyContent: "space-around",
-            textTransform: "uppercase",
-            padding: "20px",
-        },
-        button: {
-            padding: "10px",
-            border: "none",
-            backgroundColor: "transparent",
-            fontSize: "40px",
-            cursor: "pointer",
-            color: "grey",
-        }
-    }
-
     return (
         <>
-            <section style={ styles.container }>
+            <Container className='my-5'>
                 {loader}
-                { post.map( (el, key) =>  (                                
-                    <PokeList key={key} url={el.url} name={el.name}/>
-                ))}
-            </section>
-            <div style={ styles.buttonContainer }>
-                <button style={ styles.button } onClick={ btnPrev }><i className="fa-solid fa-circle-chevron-left"></i></button>
-                <button style={ styles.button } onClick={ btnNext }><i className="fa-solid fa-circle-chevron-right"></i></button>
-            </div>
+                <Row>
+                    { post.map( (el, key) =>  (                                
+                        <PokeList key={key} url={el.url} name={el.name} />
+                        ))}
+                </Row>
+            </Container>
+            <Container className='d-flex justify-content-around'>
+                <Button variant="dark" onClick={ btnPrev }><FontAwesomeIcon icon={faChevronCircleLeft}/></Button>
+                <Button variant="dark" onClick={ btnNext }><FontAwesomeIcon icon={faChevronCircleRight}/></Button>
+            </Container>
         </>
     )
 }
