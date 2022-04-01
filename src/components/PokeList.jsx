@@ -29,7 +29,7 @@ const PokeList = ({ url, name}) => {
   }, [urlList]);
 
   return (
-    <Col xs={3}>
+    <Col xs={12} md={3} className="g-5 g-md-0 m-2 m-md-0 p-md-2">
       <Button
         variant="outline-light"
         className="shadow border-0 cards"
