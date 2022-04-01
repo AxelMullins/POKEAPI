@@ -27,7 +27,7 @@ const PokemonCards = () => {
 
     return (
         <>
-            <Container className='d-flex justify-content-around'>
+            <Container className='d-flex justify-content-around mt-5 d-md-none'>
                 <Button variant="dark" onClick={ btnPrev }><FontAwesomeIcon icon={faChevronCircleLeft}/></Button>
                 <Button variant="dark" onClick={ btnNext }><FontAwesomeIcon icon={faChevronCircleRight}/></Button>
             </Container>
